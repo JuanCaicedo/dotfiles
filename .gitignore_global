@@ -1,0 +1,68 @@
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sqlite
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Notes #
+#########
+local_notes
+local_notes/
+local
+local/
+
+# Config #
+##########
+config/local-development*
+
+# Spacemac files #
+##################
+.dir-locals.el
+.dir-locals*.el
+.#*
+.tern-port
+
+# Global node modules #
+#######################
+node_modules/gh-pr
+node_modules/penthouse
+node_modules
+
+.cache
+dist
+
+
+# Ruby #
+########
+.ruby-version
