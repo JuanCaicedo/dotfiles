@@ -614,6 +614,25 @@ before packages are loaded."
                       (car kill-ring)
                       (car kill-ring)))))
 
+  ;; Copy file name with line numbers
+  (defun copy-file-name-with-lines ()
+    "Copy the path to the current file, including line numbers if
+they are in visual mode."
+    (interactive)
+    (let ((file-name (abbreviate-file-name buffer-file-name)))
+      (if (use-region-p)
+          (let* (
+                 (start (min (region-beginning) (region-end)))
+                 (end (max (region-beginning) (region-end)))
+                 (start-line (line-number-at-pos start))
+                 (end-line (when end (line-number-at-pos end))))
+            (kill-new (format "%s#L%d-L%d"
+                              file-name
+                              start-line
+                              end-line)))
+        (kill-new file-name))))
+  (spacemacs/set-leader-keys "fy" 'copy-file-name-with-lines)
+
   (spacemacs/set-leader-keys-for-major-mode 'rjsx-mode "l" 'insert-console-log)
   (spacemacs/set-leader-keys-for-major-mode 'rjsx-mode "e" 'insert-console-error)
   (spacemacs/set-leader-keys-for-major-mode 'rjsx-mode "p" 'insert-property-setter)
