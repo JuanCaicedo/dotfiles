@@ -633,6 +633,13 @@ they are in visual mode."
         (kill-new file-name))))
   (spacemacs/set-leader-keys "fy" 'copy-file-name-with-lines)
 
+  ;; Dvorak window movement
+  (spacemacs/set-leader-keys "ww" 'ace-window)
+  (spacemacs/set-leader-keys "wd" 'evil-window-left)
+  (spacemacs/set-leader-keys "wn" 'evil-window-right)
+  (spacemacs/set-leader-keys "wx" 'spacemacs/delete-window)
+
+  ;; better logging functions
   (spacemacs/set-leader-keys-for-major-mode 'rjsx-mode "l" 'insert-console-log)
   (spacemacs/set-leader-keys-for-major-mode 'rjsx-mode "e" 'insert-console-error)
   (spacemacs/set-leader-keys-for-major-mode 'rjsx-mode "p" 'insert-property-setter)
@@ -673,18 +680,18 @@ they are in visual mode."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-  (custom-set-variables
-   ;; custom-set-variables was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(package-selected-packages
-     (quote
-      (pivotal-tracker persp-mode link-hint hl-todo helm-make evil-matchit editorconfig dumb-jump counsel-projectile auto-compile packed avy counsel swiper helm helm-core smartparens ivy projectile spaceline powerline s dash which-key use-package exec-path-from-shell evil org-plus-contrib async hydra yasnippet-snippets yapfify yaml-mode ws-butler winum wgrep web-mode web-beautify volatile-highlights vi-tilde-fringe vala-snippets vala-mode uuidgen unfill undo-tree toc-org tide thrift tagedit symon string-inflection stan-mode spaceline-all-the-icons smex smeargle slim-mode scss-mode scad-mode sayid sass-mode rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocop rspec-mode robe rjsx-mode reveal-in-osx-finder restart-emacs request rbenv rake rainbow-delimiters qml-mode pyvenv pytest pyenv-mode py-isort pug-mode prettier-js popwin pkgbuild-mode pippel pipenv pip-requirements phpunit phpcbf php-extras php-auto-yasnippets pbcopy password-generator paradox ox-gfm overseer osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file nginx-mode neotree nameless mwim move-text monokai-theme mmm-mode minitest matlab-mode markdown-toc magit-gitflow magit-gh-pulls macrostep lorem-ipsum logcat livid-mode live-py-mode linum-relative less-css-mode launchctl kivy-mode julia-mode js2-refactor js-doc ivy-xref ivy-purpose ivy-hydra insert-shebang indent-guide importmagic impatient-mode ibuffer-projectile hy-mode hungry-delete hoon-mode highlight-parentheses highlight-numbers highlight-indentation goto-chg google-translate golden-ratio gnuplot gitignore-mode github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md fuzzy font-lock+ flyspell-correct-ivy flycheck-pos-tip flycheck-elm flycheck-bashate flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-mc evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-cleverparens evil-args evil-anzu emojify emoji-cheat-sheet-plus emmet-mode elm-mode elisp-slime-nav ebuild-mode drupal-mode dockerfile-mode docker diminish diff-hl cython-mode csv-mode counsel-css company-web company-tern company-statistics company-shell company-php company-flow company-emoji company-anaconda command-log-mode column-enforce-mode coffee-mode clojure-snippets clojure-cheatsheet clj-refactor clean-aindent-mode cider-eval-sexp-fu chruby centered-cursor-mode bundler browse-at-remote bind-key auto-yasnippet auto-highlight-symbol auto-dictionary arduino-mode aggressive-indent add-node-modules-path adaptive-wrap ace-window ace-link ac-ispell))))
-  (custom-set-faces
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   )
-  )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (graphql-mode pivotal-tracker persp-mode link-hint hl-todo helm-make evil-matchit editorconfig dumb-jump counsel-projectile auto-compile packed avy counsel swiper helm helm-core smartparens ivy projectile spaceline powerline s dash which-key use-package exec-path-from-shell evil org-plus-contrib async hydra yasnippet-snippets yapfify yaml-mode ws-butler winum wgrep web-mode web-beautify volatile-highlights vi-tilde-fringe vala-snippets vala-mode uuidgen unfill undo-tree toc-org tide thrift tagedit symon string-inflection stan-mode spaceline-all-the-icons smex smeargle slim-mode scss-mode scad-mode sayid sass-mode rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocop rspec-mode robe rjsx-mode reveal-in-osx-finder restart-emacs request rbenv rake rainbow-delimiters qml-mode pyvenv pytest pyenv-mode py-isort pug-mode prettier-js popwin pkgbuild-mode pippel pipenv pip-requirements phpunit phpcbf php-extras php-auto-yasnippets pbcopy password-generator paradox ox-gfm overseer osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file nginx-mode neotree nameless mwim move-text monokai-theme mmm-mode minitest matlab-mode markdown-toc magit-gitflow magit-gh-pulls macrostep lorem-ipsum logcat livid-mode live-py-mode linum-relative less-css-mode launchctl kivy-mode julia-mode js2-refactor js-doc ivy-xref ivy-purpose ivy-hydra insert-shebang indent-guide importmagic impatient-mode ibuffer-projectile hy-mode hungry-delete hoon-mode highlight-parentheses highlight-numbers highlight-indentation goto-chg google-translate golden-ratio gnuplot gitignore-mode github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md fuzzy font-lock+ flyspell-correct-ivy flycheck-pos-tip flycheck-elm flycheck-bashate flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-mc evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-cleverparens evil-args evil-anzu emojify emoji-cheat-sheet-plus emmet-mode elm-mode elisp-slime-nav ebuild-mode drupal-mode dockerfile-mode docker diminish diff-hl cython-mode csv-mode counsel-css company-web company-tern company-statistics company-shell company-php company-flow company-emoji company-anaconda command-log-mode column-enforce-mode coffee-mode clojure-snippets clojure-cheatsheet clj-refactor clean-aindent-mode cider-eval-sexp-fu chruby centered-cursor-mode bundler browse-at-remote bind-key auto-yasnippet auto-highlight-symbol auto-dictionary arduino-mode aggressive-indent add-node-modules-path adaptive-wrap ace-window ace-link ac-ispell))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+)
