@@ -619,7 +619,12 @@ before packages are loaded."
     "Copy the path to the current file, including line numbers if
 they are in visual mode."
     (interactive)
-    (let ((file-name (abbreviate-file-name buffer-file-name)))
+    (let* ((directory-abbrev-alist '(("/Users/juan" . "~")
+                                     ("~/code/td/circleci/" . "")
+                                     ("~/code/td/" . "")
+                                     ("~/code/personal/" . "")
+                                     ))
+          (file-name (abbreviate-file-name buffer-file-name)))
       (if (use-region-p)
           (let* (
                  (start (min (region-beginning) (region-end)))
