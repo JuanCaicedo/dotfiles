@@ -94,6 +94,7 @@ This function should only modify configuration layer settings."
      prettier-js
      rjsx-mode
      company-flow
+     graphql-mode
      )
 
    ;; A list of packages that cannot be updated.
