@@ -164,3 +164,6 @@ source /usr/local/bin/virtualenvwrapper.sh
 eval "$(rbenv init -)"
 export EDITOR="emacsclient -t"
 export VISUAL="emacsclient -t"
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
