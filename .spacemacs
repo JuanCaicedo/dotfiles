@@ -96,6 +96,8 @@ This function should only modify configuration layer settings."
      rjsx-mode
      company-flow
      graphql-mode
+     lispy
+     evil-lispy
      )
 
    ;; A list of packages that cannot be updated.
