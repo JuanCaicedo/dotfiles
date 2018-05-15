@@ -625,7 +625,7 @@ they are in visual mode."
                                      ("~/code/td/" . "")
                                      ("~/code/personal/" . "")
                                      ))
-          (file-name (abbreviate-file-name buffer-file-name)))
+           (file-name (abbreviate-file-name buffer-file-name)))
       (if (use-region-p)
           (let* (
                  (start (min (region-beginning) (region-end)))
