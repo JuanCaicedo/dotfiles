@@ -680,7 +680,7 @@ they are in visual mode."
   ;; add support for experimental flow
   (load-file "~/.config/spacemacs/flow.el")
   (init-flowjs)
-  (setq flow_binary "yarn run -s flow")
+  (setq flow_binary "yarn flow")
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
