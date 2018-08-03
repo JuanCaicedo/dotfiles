@@ -652,6 +652,8 @@ they are in visual mode."
   (spacemacs/set-leader-keys-for-major-mode 'rjsx-mode "e" 'insert-console-error)
   (spacemacs/set-leader-keys-for-major-mode 'rjsx-mode "p" 'insert-property-setter)
   (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode "l" 'insert-log-cljs)
+  ;; neotree collapse
+  (spacemacs/set-leader-keys-for-major-mode 'neotree-mode "RET" 'spacemacs/neotree-collapse)
 
   ;; flow support
   ;; (add-hook 'js2-mode-hook #'add-node-modules-path)
