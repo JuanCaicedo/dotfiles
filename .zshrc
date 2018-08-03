@@ -136,7 +136,7 @@ alias git=hub
 alias emacs-freeze="pkill -SIGUSR2 emacs"
 alias npmls="npm ls --depth=0"
 alias gits="git s"
-alias edit="emacsclient -t"
+# alias edit="emacsclient -t"
 # Avoid node errors
 ulimit -n 10000
 
@@ -154,7 +154,7 @@ source /usr/local/bin/virtualenvwrapper.sh
 
 # rbenv
 eval "$(rbenv init -)"
-export EDITOR="emacsclient -t"
+# export EDITOR="emacsclient -t"
 export VISUAL="emacsclient -t"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
