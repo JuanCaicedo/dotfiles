@@ -117,14 +117,6 @@ function tabname {
   printf "\e]1;$1\a"
 }
 
-function mocha-watch {
-    NODE_ENV=test mocha $1 -w --reporter ${MOCHA_REPORTER:-min}
-}
-
-function mocha-test {
-    NODE_ENV=test mocha $1 --reporter ${MOCHA_REPORTER:-min}
-}
-
 function copy-last {
     history | tail -n 1 | awk '{$1=""; print $0}' | pbcopy
 }
