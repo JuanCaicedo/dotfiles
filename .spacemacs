@@ -638,7 +638,9 @@ they are in visual mode."
                               file-name
                               start-line
                               end-line)))
-        (kill-new file-name))))
+        (kill-new file-name)
+        (evil-exit-visual-state 't))))
+
   (spacemacs/set-leader-keys "fY" 'copy-file-name-with-lines)
 
   ;; Dvorak window movement
