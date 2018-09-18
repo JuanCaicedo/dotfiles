@@ -33,7 +33,8 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(clojure
+   '(
+     clojure
      emoji
      typescript
      nginx
@@ -52,6 +53,9 @@ This function should only modify configuration layer settings."
      emacs-lisp
      evil-commentary
      elm
+     rust
+     fsharp
+     elixir
      git
      github
      html
