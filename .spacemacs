@@ -623,6 +623,20 @@ before packages are loaded."
                       (car kill-ring)
                       (car kill-ring)))))
 
+  (defun insert-let-log-clj ()
+    "Insert clojure equivalent of console logging, when inside a let statement."
+    (interactive)
+    (let ((beg nil)
+          (end nil))
+      (back-to-indentation)
+      (setq beg (point))
+      (end-of-line)
+      (setq end (point))
+      (kill-region beg end)
+      (insert (format "_ (println \"%s\" %s)"
+                      (car kill-ring)
+                      (car kill-ring)))))
+
   (defun insert-log-clj ()
     "Insert clojure equivalent of console logging."
     (interactive)
@@ -651,6 +665,26 @@ before packages are loaded."
                       (car kill-ring)
                       (car kill-ring)))))
 
+  (defun insert-ticket-header ()
+    "Insert a heading with the ticket name and a place for the ticket link."
+    (interactive)
+    (let ((beg nil)
+          (end nil))
+      (back-to-indentation)
+      (setq beg (point))
+      (end-of-line)
+      (setq end (point))
+      (kill-region beg end)
+      (let* ((ticket-link (replace-regexp-in-string "\n"
+                                                    ""
+                                                    (car kill-ring)))
+             (ticket-number (replace-regexp-in-string "https://circleci.atlassian.net/browse/"
+                                                      ""
+                                                      ticket-link)))
+        (insert (format "* %s\n** Ticket\n%s"
+                        ticket-number
+                        ticket-link)))))
+
   ;; Copy file name with line numbers
   (defun copy-file-name-with-lines ()
     "Copy the path to the current file, including line numbers if
@@ -674,7 +708,6 @@ they are in visual mode."
                               end-line)))
         (kill-new file-name)
         (evil-exit-visual-state 't))))
-
   (spacemacs/set-leader-keys "fY" 'copy-file-name-with-lines)
 
   ;; Dvorak window movement
@@ -689,7 +722,9 @@ they are in visual mode."
   (spacemacs/set-leader-keys-for-major-mode 'rjsx-mode "p" 'insert-property-setter)
   (spacemacs/set-leader-keys-for-major-mode 'clojurescript-mode "l" 'insert-log-cljs)
   (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "l" 'insert-log-clj)
+  (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "L" 'insert-let-log-clj)
   (spacemacs/set-leader-keys-for-major-mode 'clojure-mode "R" 'insert-snag-clj)
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode "l" 'insert-ticket-header)
 
   ;; neotree collapse
   (spacemacs/set-leader-keys-for-major-mode 'neotree-mode "RET" 'spacemacs/neotree-collapse)
@@ -736,7 +771,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (jekyll-modes yasnippet-snippets org-brain yapfify yaml-mode ws-butler winum which-key wgrep web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tide typescript-mode tagedit spaceline powerline smex smeargle slim-mode slack emojify circe oauth2 websocket scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rjsx-mode reveal-in-osx-finder restart-emacs rbenv rake rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode prettier-js popwin pip-requirements phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox ox-gfm osx-trash osx-dictionary orgit org-projectile org-category-capture org-present org-pomodoro org-plus-contrib org-mime org-download org-bullets open-junk-file nginx-mode neotree mwim move-text mmm-mode minitest markdown-toc markdown-mode magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode skewer-mode simple-httpd live-py-mode linum-relative link-hint less-css-mode launchctl js2-refactor js2-mode js-doc ivy-hydra insert-shebang indent-guide ibuffer-projectile hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore request helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haml-mode graphql-mode google-translate golden-ratio gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht gh-md fuzzy flyspell-correct-ivy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck-elm flycheck flx-ido flx fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit magit git-commit ghub let-alist with-editor evil-lispy lispy zoutline evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu anzu evil goto-chg undo-tree emoji-cheat-sheet-plus emmet-mode elm-mode elisp-slime-nav dumb-jump drupal-mode php-mode dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat diminish diff-hl cython-mode csv-mode counsel-projectile projectile counsel swiper ivy company-web web-completion-data company-tern dash-functional tern company-statistics company-shell company-flow company-emoji company-anaconda company command-log-mode column-enforce-mode coffee-mode clojure-snippets clj-refactor hydra inflections edn multiple-cursors paredit peg clean-aindent-mode cider-eval-sexp-fu eval-sexp-fu highlight cider seq spinner queue pkg-info clojure-mode epl chruby bundler inf-ruby bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-dictionary auto-compile packed anaconda-mode pythonic f dash s alert log4e gntp aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-ispell auto-complete popup monokai-theme))))
+    (logcat ivy-yasnippet impatient-mode hoon-mode flycheck-rust elm-test-runner editorconfig ebuild-mode doom-modeline eldoc-eval shrink-path sesman yapfify yaml-mode ws-butler winum which-key wgrep web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tide typescript-mode tagedit spaceline powerline smex smeargle slim-mode slack emojify circe oauth2 websocket scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rjsx-mode reveal-in-osx-finder restart-emacs rbenv rake rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode prettier-js popwin pip-requirements phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox ox-gfm osx-trash osx-dictionary orgit org-projectile org-category-capture org-present org-pomodoro org-plus-contrib org-mime org-download org-bullets open-junk-file nginx-mode neotree mwim move-text mmm-mode minitest markdown-toc markdown-mode magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode skewer-mode simple-httpd live-py-mode linum-relative link-hint less-css-mode launchctl js2-refactor js2-mode js-doc ivy-hydra insert-shebang indent-guide ibuffer-projectile hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore request helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haml-mode graphql-mode google-translate golden-ratio gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht gh-md fuzzy flyspell-correct-ivy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck-elm flycheck flx-ido flx fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit magit git-commit ghub let-alist with-editor evil-lispy lispy zoutline evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu anzu evil goto-chg undo-tree emoji-cheat-sheet-plus emmet-mode elm-mode elisp-slime-nav dumb-jump drupal-mode php-mode dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat diminish diff-hl cython-mode csv-mode counsel-projectile projectile counsel swiper ivy company-web web-completion-data company-tern dash-functional tern company-statistics company-shell company-flow company-emoji company-anaconda company command-log-mode column-enforce-mode coffee-mode clojure-snippets clj-refactor hydra inflections edn multiple-cursors paredit peg clean-aindent-mode cider-eval-sexp-fu eval-sexp-fu highlight cider seq spinner queue pkg-info clojure-mode epl chruby bundler inf-ruby bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-dictionary auto-compile packed anaconda-mode pythonic f dash s alert log4e gntp aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-ispell auto-complete popup monokai-theme))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
