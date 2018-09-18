@@ -539,8 +539,9 @@ before packages are loaded."
 
   (setq-default evil-escape-key-sequence "uu")
 
-  (defun nothing())
+  (defun nothing () ())
   (define-key evil-normal-state-map (kbd "<down-mouse-1>") 'nothing)
+  (define-key evil-normal-state-map (kbd "C-SPC") 'nothing)
   (dolist (mouse '("<down-mouse-1>" "<mouse-1>"))
     (global-unset-key (kbd mouse)))
 
