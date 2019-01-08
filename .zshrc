@@ -53,6 +53,7 @@ plugins=(
   zsh-autosuggestions
   cp
   git
+  golang
   nvm
   zsh-completions
   virtualenv
