@@ -122,6 +122,11 @@ function copy-last {
     history | tail -n 1 | awk '{$1=""; print $0}' | pbcopy
 }
 
+function restart-touch-bar {
+    pkill "Touch Bar agent";
+    killall "ControlStrip";
+}
+
 # aliases
 alias zshconfig="vim ~/.zshrc"
 alias npm='nocorrect npm'
@@ -141,7 +146,7 @@ alias gits="git s"
 # Avoid node errors
 ulimit -n 10000
 
-nvm use stable --silent
+nvm use default --silent
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
