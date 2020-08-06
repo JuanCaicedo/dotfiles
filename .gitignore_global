@@ -52,12 +52,19 @@ config/local-development*
 .dir-locals*.el
 .#*
 .tern-port
+snippets/
 
 # Global node modules #
 #######################
 node_modules/gh-pr
 node_modules/penthouse
 node_modules
+
+# Thangs #
+##########
+/public/static/
+cache
+
 
 .cache
 dist

@@ -34,6 +34,10 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     sql
+     python
+     elixir
+     html
      clojure
      emoji
      typescript
@@ -46,44 +50,31 @@ This function should only modify configuration layer settings."
      ;; ----------------------------------------------------------------
      csv
      helm
-     auto-completion
      ;; auto-completion
-     command-log
-     better-defaults
+     ;; better-defaults
      emacs-lisp
-     evil-commentary
      elm
-     rust
-     fsharp
-     elixir
      git
      github
-     html
-     ivy
+     ;; ivy
      javascript
      (keyboard-layout :variables
                       kl-layout 'dvp)
-     ibuffer
+                      ;; kl-layout 'dvorak)
      markdown
-     major-modes
-     (org :variables
-          org-enable-github-support t)
+     ;; multiple-cursors
+     neotree
+     org
      osx
-     php
-     python
      ruby
      yaml
      shell-scripts
-     ;; themes-megapack
-     ;; typescript
-     better-defaults
-     spell-checking
-     ;; (syntax-checking :variables syntax-checking-enable-by-default nil)
-     syntax-checking
-     version-control
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
+     ;; spell-checking
+     ;; syntax-checking
+     ;; version-control
      )
 
    ;; List of additional packages that will be installed without being
@@ -99,8 +90,9 @@ This function should only modify configuration layer settings."
      rjsx-mode
      company-flow
      graphql-mode
-     lispy
-     evil-lispy
+     flow-minor-mode
+     python-black
+     neotree
      )
 
    ;; A list of packages that cannot be updated.
@@ -109,6 +101,8 @@ This function should only modify configuration layer settings."
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '(
                                     wolfram-mode
+                                    ebuild-mode
+                                    treemacs
                                     )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -128,7 +122,7 @@ It should only modify the values of Spacemacs settings."
   ;; spacemacs settings.
   (setq-default
    ;; JUAN'S CUSTOMIZATIONS
-   exec-path-from-shell-check-startup-files nil
+   ;; exec-path-from-shell-check-startup-files nil
    indent-tabs-mode nil
    ;; js2-mode
    js2-basic-offset 2
@@ -145,7 +139,7 @@ It should only modify the values of Spacemacs settings."
    elm-sort-imports-on-save t
    elm-format-on-save t
 
-   ;; If non nil ELPA repositories are contacted via HTTPS whenever it's
+   ;; If non-nil ELPA repositories are contacted via HTTPS whenever it's
    ;; possible. Set it to nil if you have no way to use HTTPS in your
    ;; environment, otherwise it is strongly recommended to let it set to t.
    ;; This variable has no effect if Emacs is launched with the parameter
@@ -272,21 +266,6 @@ It should only modify the values of Spacemacs settings."
    ;; works in the GUI. (default nil)
    dotspacemacs-distinguish-gui-tab nil
 
-   ;; If non-nil `Y' is remapped to `y$' in Evil states. (default nil)
-   dotspacemacs-remap-Y-to-y$ nil
-
-   ;; If non-nil, the shift mappings `<' and `>' retain visual state if used
-   ;; there. (default t)
-   dotspacemacs-retain-visual-state-on-shift t
-
-   ;; If non-nil, `J' and `K' move lines up and down when in visual mode.
-   ;; (default nil)
-   dotspacemacs-visual-line-move-text nil
-
-   ;; If non-nil, inverse the meaning of `g' in `:substitute' Evil ex-command.
-   ;; (default nil)
-   dotspacemacs-ex-substitute-global nil
-
    ;; Name of the default layout (default "Default")
    dotspacemacs-default-layout-name "Default"
 
@@ -316,26 +295,9 @@ It should only modify the values of Spacemacs settings."
    ;; Maximum number of rollback slots to keep in the cache. (default 5)
    dotspacemacs-max-rollback-slots 5
 
-   ;; If non-nil, `helm' will try to minimize the space it uses. (default nil)
-   dotspacemacs-helm-resize nil
-
-   ;; if non-nil, the helm header is hidden when there is only one source.
-   ;; (default nil)
-   dotspacemacs-helm-no-header nil
-
-   ;; define the position to display `helm', options are `bottom', `top',
-   ;; `left', or `right'. (default 'bottom)
-   dotspacemacs-helm-position 'bottom
-
-   ;; Controls fuzzy matching in helm. If set to `always', force fuzzy matching
-   ;; in all non-asynchronous sources. If set to `source', preserve individual
-   ;; source settings. Else, disable fuzzy matching in all sources.
-   ;; (default 'always)
-   dotspacemacs-helm-use-fuzzy 'always
-
-   ;; If non-nil, the paste transient-state is enabled. While enabled, pressing
-   ;; `p' several times cycles through the elements in the `kill-ring'.
-   ;; (default nil)
+   ;; If non-nil, the paste transient-state is enabled. While enabled, after you
+   ;; paste something, pressing `C-j' and `C-k' several times cycles through the
+   ;; elements in the `kill-ring'. (default nil)
    dotspacemacs-enable-paste-transient-state nil
 
    ;; Which-key delay in seconds. The which-key buffer is the popup listing
@@ -389,7 +351,9 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil show the color guide hint for transient state keys. (default t)
    dotspacemacs-show-transient-state-color-guide t
 
-   ;; If non-nil unicode symbols are displayed in the mode line. (default t)
+   ;; If non-nil unicode symbols are displayed in the mode line.
+   ;; If you use Emacs as a daemon and wants unicode characters only in GUI set
+   ;; the value to quoted `display-graphic-p'. (default t)
    dotspacemacs-mode-line-unicode-symbols t
 
    ;; If non-nil smooth scrolling (native-scrolling) is enabled. Smooth
@@ -431,7 +395,15 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-highlight-delimiters 'all
 
    ;; If non-nil, start an Emacs server if one is not already running.
-   dotspacemacs-enable-server t
+   ;; (default nil)
+   dotspacemacs-enable-server nil
+
+   ;; Set the emacs server socket location.
+   ;; If nil, uses whatever the Emacs default is, otherwise a directory path
+   ;; like \"~/.emacs.d/server\". It has no effect if
+   ;; `dotspacemacs-enable-server' is nil.
+   ;; (default nil)
+   dotspacemacs-server-socket-dir nil
 
    ;; If non-nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
@@ -484,12 +456,23 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil)
    dotspacemacs-pretty-docs nil))
 
+(defun dotspacemacs/user-env ()
+  "Environment variables setup.
+This function defines the environment variables for your Emacs session. By
+default it calls `spacemacs/load-spacemacs-env' which loads the environment
+variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
+See the header of this file for more information."
+  (spacemacs/load-spacemacs-env))
+
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
 This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+  ;; Emoji support https://github.com/syl20bnr/spacemacs/issues/6654#issuecomment-236733588
+  (set-fontset-font t 'unicode "Apple Color Emoji" nil 'prepend)
+
   (setq-default
    require-final-newline t
    magit-commit-show-diff nil)
@@ -499,6 +482,12 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   )
 
+(defun dotspacemacs/user-load ()
+  "Library to load while dumping.
+This function is called only while dumping Spacemacs configuration. You can
+`require' or `load' the libraries of your choice that will be included in the
+dump."
+  )
 
 (defun dotspacemacs/user-config ()
   "Configuration for user code:
@@ -516,28 +505,26 @@ before packages are loaded."
   (add-to-list 'auto-mode-alist '("\\.jsx?\\'" . rjsx-mode))
   (add-to-list 'auto-mode-alist '("\\.mdx?\\'" . markdown-mode))
   (add-hook 'js2-mode-hook 'prettier-js-mode)
+  (remove-hook 'scss-mode-hook 'flycheck-mode)
   (add-hook 'typescript-mode-hook 'prettier-js-mode)
   (add-hook 'typescript-tsx-mode-hook 'prettier-js-mode)
+  (add-hook 'rjsx-mode 'yas-minor-mode)
   (setq prettier-js-args '(
                            "--single-quote"
-                           ;; "--trailing-comma" "es5"
-                           ;; "--no-semi"
+                           "--trailing-comma" "es5"
+                           "--no-semi"
                            "--write"
                            ))
+
   (add-to-list 'safe-local-variable-values
                '(prettier-js-args
                  .
                  '(
                    "--single-quote"
-                   "--trailing-comma" "es5"
                    "--no-semi"
                    "--write"
                    )
                  ))
-  ;; (add-to-list 'safe-local-variable-values
-  ;;              '(prettier-js-command
-  ;;                .
-  ;;                "/Users/JuanCaicedo/.nvm/versions/node/v6.11.1/bin/prettier"))
 
   (setq-default evil-escape-key-sequence "uu")
 
@@ -568,8 +555,6 @@ before packages are loaded."
 
   ;; vim noh as ctrl
   (define-key evil-normal-state-map (kbd "<escape>") 'evil-search-highlight-persist-remove-all)
-  ;; evil todo
-  ;; (with-eval-after-load 'org
 
   ;; custom commands
   (evil-define-key 'normal org-mode-map (kbd "m") 'org-todo)
@@ -665,6 +650,34 @@ before packages are loaded."
                       (car kill-ring)
                       (car kill-ring)))))
 
+  (defun insert-log-python ()
+    "Insert python equivalent of console logging."
+    (interactive)
+    (let ((beg nil)
+          (end nil))
+      (back-to-indentation)
+      (setq beg (point))
+      (end-of-line)
+      (setq end (point))
+      (kill-region beg end)
+      (insert (format "print('%s', ( %s ))"
+                      (car kill-ring)
+                      (car kill-ring)))))
+
+  (defun insert-log-elixir ()
+    "Insert elixir equivalent of console logging."
+    (interactive)
+    (let ((beg nil)
+          (end nil))
+      (back-to-indentation)
+      (setq beg (point))
+      (end-of-line)
+      (setq end (point))
+      (kill-region beg end)
+      (insert (format "IO.inspect %s, label: \"\\n%s\""
+                      (car kill-ring)
+                      (car kill-ring)))))
+
   (defun insert-snag-clj ()
     "Insert statement to capture variable for repl."
     (interactive)
@@ -692,7 +705,7 @@ before packages are loaded."
       (let* ((ticket-link (replace-regexp-in-string "\n"
                                                     ""
                                                     (car kill-ring)))
-             (ticket-number (replace-regexp-in-string "https://circleci.atlassian.net/browse/"
+             (ticket-number (replace-regexp-in-string "https://artifactteam.atlassian.net/browse/"
                                                       ""
                                                       ticket-link)))
         (insert (format "* %s\n** Ticket\n%s"
@@ -728,6 +741,8 @@ they are in visual mode."
   (spacemacs/set-leader-keys "ww" 'ace-window)
   (spacemacs/set-leader-keys "wd" 'evil-window-left)
   (spacemacs/set-leader-keys "wn" 'evil-window-right)
+  (spacemacs/set-leader-keys "wh" 'evil-window-down)
+  (spacemacs/set-leader-keys "wt" 'evil-window-up)
   (spacemacs/set-leader-keys "wx" 'spacemacs/delete-window)
 
   ;; better logging functions
@@ -741,13 +756,25 @@ they are in visual mode."
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "l" 'insert-ticket-header)
   (spacemacs/set-leader-keys-for-major-mode 'typescript-mode "l" 'insert-console-log)
   (spacemacs/set-leader-keys-for-major-mode 'typescript-tsx-mode "l" 'insert-console-log)
+  (spacemacs/set-leader-keys-for-major-mode 'elixir-mode "l" 'insert-log-elixir)
+  (spacemacs/set-leader-keys-for-major-mode 'python-mode "l" 'insert-log-python)
 
   ;; neotree collapse
   (spacemacs/set-leader-keys-for-major-mode 'neotree-mode "RET" 'spacemacs/neotree-collapse)
 
-  ;; flow support
-  ;; (add-hook 'js2-mode-hook #'add-node-modules-path)
-  ;; (require 'add-node-modules-path)
+  ;; treemacs
+  (evil-define-key 'normal treemacs-mode-map (kbd "d") 'evil-backward-char)
+  (evil-define-key 'normal treemacs-mode-map (kbd "h") 'evil-next-line)
+  (evil-define-key 'normal treemacs-mode-map (kbd "t") 'treemacs-next-line)
+  (evil-define-key 'normal treemacs-mode-map (kbd "n") 'evil-forward-char)
+  (evil-define-key 'normal treemacs-mode-map (kbd "j") 'evil-forward-char)
+
+  ;; Load node path
+  (load-file "~/add-node-modules-path/add-node-modules-path.el")
+  (eval-after-load 'rjsx-mode
+    '(add-hook 'rjsx-mode-hook #'add-node-modules-path))
+  (eval-after-load 'typescript-mode
+    '(add-hook 'typescript-mode-hook #'add-node-modules-path))
 
   (setq magit-display-buffer-function
         (lambda (buffer)
@@ -768,9 +795,9 @@ they are in visual mode."
                                   spell-checking-enable-by-default nil)))
 
   ;; add support for experimental flow
-  (load-file "~/.config/spacemacs/flow.el")
-  (init-flowjs)
-  (setq flow_binary "yarn flow")
+  ;; (load-file "~/.config/spacemacs/flow.el")
+  ;; (init-flowjs)
+  ;; (setq flow_binary "yarn flow")
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -787,26 +814,21 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (yasnippet-snippets pkgbuild-mode org-brain magithub ghub+ editorconfig doom-modeline company-php ac-php-core cargo sesman yapfify yaml-mode ws-butler winum which-key wgrep web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tide typescript-mode tagedit spaceline powerline smex smeargle slim-mode slack emojify circe oauth2 websocket scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rjsx-mode reveal-in-osx-finder restart-emacs rbenv rake rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode prettier-js popwin pip-requirements phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox ox-gfm osx-trash osx-dictionary orgit org-projectile org-category-capture org-present org-pomodoro org-plus-contrib org-mime org-download org-bullets open-junk-file nginx-mode neotree mwim move-text mmm-mode minitest markdown-toc markdown-mode magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode skewer-mode simple-httpd live-py-mode linum-relative link-hint less-css-mode launchctl js2-refactor js2-mode js-doc ivy-hydra insert-shebang indent-guide ibuffer-projectile hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore request helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haml-mode graphql-mode google-translate golden-ratio gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht gh-md fuzzy flyspell-correct-ivy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck-elm flycheck flx-ido flx fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit magit git-commit ghub let-alist with-editor evil-lispy lispy zoutline evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu anzu evil goto-chg undo-tree emoji-cheat-sheet-plus emmet-mode elm-mode elisp-slime-nav dumb-jump drupal-mode php-mode dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat diminish diff-hl cython-mode csv-mode counsel-projectile projectile counsel swiper ivy company-web web-completion-data company-tern dash-functional tern company-statistics company-shell company-flow company-emoji company-anaconda company command-log-mode column-enforce-mode coffee-mode clojure-snippets clj-refactor hydra inflections edn multiple-cursors paredit peg clean-aindent-mode cider-eval-sexp-fu eval-sexp-fu highlight cider seq spinner queue pkg-info clojure-mode epl chruby bundler inf-ruby bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-dictionary auto-compile packed anaconda-mode pythonic f dash s alert log4e gntp aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-ispell auto-complete popup monokai-theme)))
+    (vimrc-mode helm-gtags ggtags dactyl-mode counsel-gtags evil-nerd-commenter yapfify yaml-mode ws-butler winum which-key wgrep web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tide typescript-mode tagedit spaceline powerline smex smeargle slim-mode slack emojify circe oauth2 websocket scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rjsx-mode reveal-in-osx-finder restart-emacs rbenv rake rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode prettier-js popwin pip-requirements phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox ox-gfm osx-trash osx-dictionary orgit org-projectile org-category-capture org-present org-pomodoro org-plus-contrib org-mime org-download org-bullets open-junk-file nginx-mode neotree mwim move-text mmm-mode minitest markdown-toc markdown-mode magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode skewer-mode simple-httpd live-py-mode linum-relative link-hint less-css-mode launchctl js2-refactor js2-mode js-doc ivy-hydra insert-shebang indent-guide ibuffer-projectile hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore request helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haml-mode graphql-mode google-translate golden-ratio gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht gh-md fuzzy flyspell-correct-ivy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck-elm flycheck flx-ido flx fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit magit git-commit ghub let-alist with-editor evil-lispy lispy zoutline evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu anzu evil goto-chg undo-tree emoji-cheat-sheet-plus emmet-mode elm-mode elisp-slime-nav dumb-jump drupal-mode php-mode dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat diminish diff-hl cython-mode csv-mode counsel-projectile projectile counsel swiper ivy company-web web-completion-data company-tern dash-functional tern company-statistics company-shell company-flow company-emoji company-anaconda company command-log-mode column-enforce-mode coffee-mode clojure-snippets clj-refactor hydra inflections edn multiple-cursors paredit peg clean-aindent-mode cider-eval-sexp-fu eval-sexp-fu highlight cider seq spinner queue pkg-info clojure-mode epl chruby bundler inf-ruby bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-dictionary auto-compile packed anaconda-mode pythonic f dash s alert log4e gntp aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-ispell auto-complete popup monokai-theme)))
  '(safe-local-variable-values
    (quote
-    ((setq prettier-js-args
-           (quote
-            ("--single-quote" "--no-semi" "--write")))
+    ((prettier-js-args "--no-semi" "--trailing-comma" "es5" "--print-width" "120" "--write")
+     (prettier-js-args "--no-semi" "--trailing-comma" "es5" "--single-quote" "--write")
+     (prettier-js-args "--no-semi" "--trailing-comma" "es5" "--single-quote" "--print-width" "120" "--write")
+     (prettier-js-args "--single-quote" "--no-semi" "--write")
      (prettier-js-args quote
-                       ("--single-quote" "--trailing-comma" "es5" "--no-semi" "--write"))
-     (typescript-backend . tide)
-     (typescript-backend . lsp)
-     (javascript-backend . tern)
-     (javascript-backend . lsp)
-     (elixir-enable-compilation-checking . t)
-     (elixir-enable-compilation-checking)))))
+                       ("--single-quote" "--no-semi" "--write"))))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((((class color) (min-colors 257)) (:foreground "#F8F8F2" :background "#272822")) (((class color) (min-colors 89)) (:foreground "#F5F5F5" :background "#1B1E1C")))))
 )
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -815,10 +837,15 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (yapfify yaml-mode ws-butler winum which-key wgrep web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tide typescript-mode tagedit spaceline powerline smex smeargle slim-mode slack emojify circe oauth2 websocket scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rjsx-mode reveal-in-osx-finder restart-emacs rbenv rake rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode prettier-js popwin pip-requirements phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox ox-gfm osx-trash osx-dictionary orgit org-projectile org-category-capture org-present org-pomodoro org-plus-contrib org-mime org-download org-bullets open-junk-file nginx-mode neotree mwim move-text mmm-mode minitest markdown-toc markdown-mode magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode skewer-mode simple-httpd live-py-mode linum-relative link-hint less-css-mode launchctl js2-refactor js2-mode js-doc ivy-hydra insert-shebang indent-guide ibuffer-projectile hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore request helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haml-mode graphql-mode google-translate golden-ratio gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht gh-md fuzzy flyspell-correct-ivy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck-elm flycheck flx-ido flx fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit magit git-commit ghub let-alist with-editor evil-lispy lispy zoutline evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu anzu evil goto-chg undo-tree emoji-cheat-sheet-plus emmet-mode elm-mode elisp-slime-nav dumb-jump drupal-mode php-mode dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat diminish diff-hl cython-mode csv-mode counsel-projectile projectile counsel swiper ivy company-web web-completion-data company-tern dash-functional tern company-statistics company-shell company-flow company-emoji company-anaconda company command-log-mode column-enforce-mode coffee-mode clojure-snippets clj-refactor hydra inflections edn multiple-cursors paredit peg clean-aindent-mode cider-eval-sexp-fu eval-sexp-fu highlight cider seq spinner queue pkg-info clojure-mode epl chruby bundler inf-ruby bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-dictionary auto-compile packed anaconda-mode pythonic f dash s alert log4e gntp aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-ispell auto-complete popup monokai-theme))))
+    (evil-nerd-commenter yapfify yaml-mode ws-butler winum which-key wgrep web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tide typescript-mode tagedit spaceline powerline smex smeargle slim-mode slack emojify circe oauth2 websocket scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rjsx-mode reveal-in-osx-finder restart-emacs rbenv rake rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode prettier-js popwin pip-requirements phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox ox-gfm osx-trash osx-dictionary orgit org-projectile org-category-capture org-present org-pomodoro org-plus-contrib org-mime org-download org-bullets open-junk-file nginx-mode neotree mwim move-text mmm-mode minitest markdown-toc markdown-mode magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode skewer-mode simple-httpd live-py-mode linum-relative link-hint less-css-mode launchctl js2-refactor js2-mode js-doc ivy-hydra insert-shebang indent-guide ibuffer-projectile hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore request helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haml-mode graphql-mode google-translate golden-ratio gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht gh-md fuzzy flyspell-correct-ivy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck-elm flycheck flx-ido flx fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit magit git-commit ghub let-alist with-editor evil-lispy lispy zoutline evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu anzu evil goto-chg undo-tree emoji-cheat-sheet-plus emmet-mode elm-mode elisp-slime-nav dumb-jump drupal-mode php-mode dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat diminish diff-hl cython-mode csv-mode counsel-projectile projectile counsel swiper ivy company-web web-completion-data company-tern dash-functional tern company-statistics company-shell company-flow company-emoji company-anaconda company command-log-mode column-enforce-mode coffee-mode clojure-snippets clj-refactor hydra inflections edn multiple-cursors paredit peg clean-aindent-mode cider-eval-sexp-fu eval-sexp-fu highlight cider seq spinner queue pkg-info clojure-mode epl chruby bundler inf-ruby bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-dictionary auto-compile packed anaconda-mode pythonic f dash s alert log4e gntp aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-ispell auto-complete popup monokai-theme)))
+ '(safe-local-variable-values
+   (quote
+    ((prettier-js-args "--single-quote" "--no-semi" "--write")
+     (prettier-js-args quote
+                       ("--single-quote" "--no-semi" "--write"))))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((((class color) (min-colors 257)) (:foreground "#F8F8F2" :background "#272822")) (((class color) (min-colors 89)) (:foreground "#F5F5F5" :background "#1B1E1C")))))

@@ -122,6 +122,11 @@ function copy-last {
     history | tail -n 1 | awk '{$1=""; print $0}' | pbcopy
 }
 
+function restart-touch-bar {
+    pkill "Touch Bar agent";
+    killall "ControlStrip";
+}
+
 # aliases
 alias zshconfig="vim ~/.zshrc"
 alias npm='nocorrect npm'
@@ -137,11 +142,14 @@ alias git=hub
 alias emacs-freeze="pkill -SIGUSR2 emacs"
 alias npmls="npm ls --depth=0"
 alias gits="git s"
+alias tmuk="tmux"
+alias python="python3"
+alias pip="pip3"
 # alias edit="emacsclient -t"
 # Avoid node errors
 ulimit -n 10000
 
-nvm use stable --silent
+nvm use default --silent
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
@@ -150,8 +158,8 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Virtualenvwrapper things
-export WORKON_HOME=$HOME/.virtualenvs
-source /usr/local/bin/virtualenvwrapper.sh
+# export WORKON_HOME=$HOME/.virtualenvs
+# source /usr/local/bin/virtualenvwrapper.sh
 
 # rbenv
 eval "$(rbenv init -)"
@@ -160,3 +168,21 @@ export VISUAL="emacsclient -t"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+
+# Kill the process that has hold of a given port number
+function killport () {
+	  lsof -i :$1 | tail -n1 | awk '{print $2}' | xargs kill
+}
+
+# Fix pipenv
+export LDFLAGS="-L/usr/local/opt/openssl/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl/include"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/juan/code/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/juan/code/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/juan/code/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/juan/code/google-cloud-sdk/completion.zsh.inc'; fi
+
+# asdf
+. $(brew --prefix asdf)/asdf.sh
