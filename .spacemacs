@@ -69,12 +69,6 @@ This function should only modify configuration layer settings."
      ruby
      yaml
      shell-scripts
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
-     ;; spell-checking
-     ;; syntax-checking
-     ;; version-control
      )
 
    ;; List of additional packages that will be installed without being
@@ -90,9 +84,6 @@ This function should only modify configuration layer settings."
      rjsx-mode
      company-flow
      graphql-mode
-     flow-minor-mode
-     python-black
-     neotree
      )
 
    ;; A list of packages that cannot be updated.
@@ -102,7 +93,6 @@ This function should only modify configuration layer settings."
    dotspacemacs-excluded-packages '(
                                     wolfram-mode
                                     ebuild-mode
-                                    treemacs
                                     )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -229,9 +219,10 @@ It should only modify the values of Spacemacs settings."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '(
+                               ;; "Inter"
                                "Office Code Pro"
                                ;; "Source Sans Pro"
-                               :size 14
+                               :size 12
                                ;; :size 16
                                :weight normal
                                :width normal
