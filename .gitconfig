@@ -1,0 +1,72 @@
+[user]
+	name = Juan Caicedo
+	email = retiredcanadianpoet@gmail.com
+[filter "media"]
+	clean = git-media-clean %f
+	smudge = git-media-smudge %f
+[credential]
+	helper = osxkeychain
+[alias]
+	co = checkout
+	cp = cherry-pick
+	p = push
+	l = pull
+	s = status
+	d = diff
+	f = fetch
+	b = branch
+	a = add
+	c = commit -m
+	fp = fetch --prune
+	b = branch
+	back = checkout -
+	master = checkout master
+	get = "!f() { git checkout master; git pull; }; f"
+	dan-branches = "!git fetch -p origin ; git branch -vv | command grep ': gone' | command cut -d ' ' -f 3 | xargs git branch -D"
+	clean-branches = "!git branch --merged HEAD | grep -v master | grep -v development | grep -v '*' | xargs git branch -D"
+	clean-all = "!git branch | grep -v master | grep -v development | grep -v '*' | xargs git branch -D"
+	branches = for-each-ref --count=12 --sort=-committerdate \
+			refs/heads/ --format='%(refname:short)'
+	branchs = for-each-ref --count=12 --sort=-committerdate \
+			refs/heads/ --format='%(refname:short)'
+	branchsl = for-each-ref --count=20 --sort=-committerdate \
+			refs/heads/ --format='%(refname:short)'
+	branchsll = for-each-ref --count=30 --sort=-committerdate \
+			refs/heads/ --format='%(refname:short)'
+	e = "!f() { echo -8 `git rev-parse --abbrev-ref @{-8}`; \
+			echo -7 `git rev-parse --abbrev-ref @{-7}`; \
+			echo -6 `git rev-parse --abbrev-ref @{-6}`; \
+			echo -5 `git rev-parse --abbrev-ref @{-5}`; \
+			echo -4 `git rev-parse --abbrev-ref @{-4}`; \
+			echo -3 `git rev-parse --abbrev-ref @{-3}`; \
+			echo -2 `git rev-parse --abbrev-ref @{-2}`; \
+			echo -1 `git rev-parse --abbrev-ref @{-1}`; }; f"
+	r = "!f() { git checkout @{$1}; }; f"
+	glog = log --all --pretty='format:%d %Cgreen%h%Creset %an - %s' --graph
+	crawl = "!f() { next_commit=$(git rev-list --reverse HEAD..$1 | head -1); : ${next_commit:=$1}; git checkout $next_commit; }; f"
+[color]
+	ui = true
+[core]
+	editor = vim
+	excludesfile = /Users/juan/.gitignore_global
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	required = true
+	process = git-lfs filter-process
+[push]
+	default = simple
+[github]
+	user = juancaicedo
+	password = 5ganjwxg$Z5B
+	oauth-token = 4045dc575de3c8612c9a481733e79cb4d2cd16cd
+[gpg]
+	program = /usr/local/bin/gpg
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path =
+[mergetool "sourcetree"]
+	cmd = /Users/juan/Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[magithub]
+	online = false
