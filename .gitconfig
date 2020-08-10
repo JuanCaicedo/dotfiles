@@ -58,8 +58,6 @@
 	default = simple
 [github]
 	user = juancaicedo
-	password = 5ganjwxg$Z5B
-	oauth-token = 4045dc575de3c8612c9a481733e79cb4d2cd16cd
 [gpg]
 	program = /usr/local/bin/gpg
 [difftool "sourcetree"]
