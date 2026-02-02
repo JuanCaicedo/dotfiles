@@ -74,3 +74,28 @@ dist
 # Ruby #
 ########
 .ruby-version
+
+# Spec kit #
+############
+.cursor/
+.cursorrules
+.specify/
+.claude/
+.codex/
+specs/
+.obsidian
+.gemini
+
+# Agents
+CLAUDE.md
+AGENTS.md
+
+# pnpm
+.corepack
+
+.env-backup
+.env-backup-2
+.tmp
+todos
+docs
+screenshots
