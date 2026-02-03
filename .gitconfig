@@ -20,11 +20,11 @@
 	fp = fetch --prune
 	b = branch
 	back = checkout -
-	master = checkout master
-	get = "!f() { git checkout master; git pull; }; f"
+	main = checkout main
+	get = "!f() { git checkout main; git pull; }; f"
 	dan-branches = "!git fetch -p origin ; git branch -vv | command grep ': gone' | command cut -d ' ' -f 3 | xargs git branch -D"
-	clean-branches = "!git branch --merged HEAD | grep -v master | grep -v development | grep -v '*' | xargs git branch -D"
-	clean-all = "!git branch | grep -v master | grep -v development | grep -v '*' | xargs git branch -D"
+	clean-branches = "!git branch --merged HEAD | grep -v main | grep -v development | grep -v '*' | xargs git branch -D"
+	clean-all = "!git branch | grep -v main | grep -v development | grep -v '*' | xargs git branch -D"
 	branches = for-each-ref --count=12 --sort=-committerdate \
 			refs/heads/ --format='%(refname:short)'
 	branchs = for-each-ref --count=12 --sort=-committerdate \
@@ -48,7 +48,7 @@
 	ui = true
 [core]
 	editor = vim
-	excludesfile = /Users/juan/.gitignore_global
+	excludesfile = /Users/juan.caicedo/.gitignore_global
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

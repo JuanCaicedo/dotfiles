@@ -1,5 +1,8 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/juan/.oh-my-zsh
+export ZSH=/Users/juan.caicedo/.oh-my-zsh
+
+#export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -50,18 +53,20 @@ DISABLE_AUTO_TITLE="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  zsh-autosuggestions
+#  zsh-autosuggestions
   cp
   git
-  golang
+#  golang
   nvm
-  zsh-completions
-  virtualenv
-  virtualenvwrapper
+#  zsh-completions
+#  virtualenv
+#  virtualenvwrapper
 )
 # User configuration
 
-source $ZSH/oh-my-zsh.sh
+#source $ZSH/oh-my-zsh.sh
+
+source /Users/juan.caicedo/.oh-my-zsh/oh-my-zsh.sh
 
 nvm_use () {
   if [ -f .nvmrc ]; then
@@ -142,6 +147,7 @@ alias git=hub
 alias emacs-freeze="pkill -SIGUSR2 emacs"
 alias npmls="npm ls --depth=0"
 alias gits="git s"
+alias g="git"
 alias tmuk="tmux"
 alias python="python3"
 alias pip="pip3"
@@ -162,7 +168,7 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # source /usr/local/bin/virtualenvwrapper.sh
 
 # rbenv
-eval "$(rbenv init -)"
+#eval "$(rbenv init -)"
 # export EDITOR="emacsclient -t"
 export VISUAL="emacsclient -t"
 
@@ -185,4 +191,62 @@ if [ -f '/Users/juan/code/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/juan/
 if [ -f '/Users/juan/code/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/juan/code/google-cloud-sdk/completion.zsh.inc'; fi
 
 # asdf
-. $(brew --prefix asdf)/asdf.sh
+# . $(brew --prefix asdf)/asdf.sh
+
+. "$HOME/.local/bin/env"
+
+vannabk() {
+    set -euo pipefail
+
+    local REPO_ROOT="/Users/juan.caicedo/code/vanna"
+    local SRC_DIR="$REPO_ROOT/vanna-connect"
+    local BK_ROOT="$REPO_ROOT/vanna-connect-bk"
+    local DATE_DIR base n dst
+
+    DATE_DIR="$(date +%m-%d-%Y)"
+    base="${BK_ROOT}/${DATE_DIR}"
+
+    # Safety check
+    if [[ ! -d "$SRC_DIR" ]]; then
+        echo "Error: $SRC_DIR does not exist" >&2
+        return 1
+    fi
+
+    mkdir -p "$BK_ROOT"
+
+    # Pick the next available <date>_<n> directory
+    n=1
+    while [[ -e "${base}_${n}" ]]; do
+        ((n++))
+    done
+    dst="${base}_${n}"
+    mkdir -p "$dst"
+
+    # Always copy these directories
+    cp -a \
+       "$SRC_DIR/.specify" \
+       "$SRC_DIR/.cursor" \
+       "$SRC_DIR/.claude" \
+       "$SRC_DIR/specs" \
+       "$SRC_DIR/docs" \
+       "$dst/"
+
+    # Copy Claude.md only if it exists
+    if [[ -f "$SRC_DIR/Claude.md" ]]; then
+        cp -a "$SRC_DIR/Claude.md" "$dst/"
+    fi
+}
+
+##CODEX
+export CODEX_HOME=/Users/juan.caicedo/code/vanna/vanna-connect/.codex
+
+# bun completions
+[ -s "/Users/juan.caicedo/.bun/_bun" ] && source "/Users/juan.caicedo/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+alias claudep='claude --plugin-dir /Users/juan.caicedo/code/personal/compound-engineering-plugin/plugins/compound-engineering'
+
+export VISUAL="emacsclient -t".

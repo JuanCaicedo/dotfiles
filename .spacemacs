@@ -40,7 +40,8 @@ This function should only modify configuration layer settings."
      html
      clojure
      emoji
-     typescript
+     (typescript :variables
+                 typescript-backend 'lsp)
      nginx
      docker
      ;; ----------------------------------------------------------------
@@ -55,12 +56,12 @@ This function should only modify configuration layer settings."
      emacs-lisp
      elm
      git
-     github
+     ;; github
      ;; ivy
      javascript
      (keyboard-layout :variables
                       kl-layout 'dvp)
-                      ;; kl-layout 'dvorak)
+     ;; kl-layout 'dvorak)
      markdown
      ;; multiple-cursors
      neotree
@@ -69,6 +70,9 @@ This function should only modify configuration layer settings."
      ruby
      yaml
      shell-scripts
+     spacemacs-visual
+
+     lsp
      )
 
    ;; List of additional packages that will be installed without being
@@ -84,6 +88,7 @@ This function should only modify configuration layer settings."
      rjsx-mode
      company-flow
      graphql-mode
+     fill-column-indicator
      )
 
    ;; A list of packages that cannot be updated.
@@ -222,8 +227,8 @@ It should only modify the values of Spacemacs settings."
                                ;; "Inter"
                                "Office Code Pro"
                                ;; "Source Sans Pro"
-                               :size 12
-                               ;; :size 16
+                               ;; :size 12
+                               :size 16
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -324,7 +329,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   dotspacemacs-maximized-at-startup t
 
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
@@ -403,7 +408,7 @@ It should only modify the values of Spacemacs settings."
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
    ;; (default '("rg" "ag" "pt" "ack" "grep"))
-   dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
+   dotspacemacs-search-tools '("rg" "ag" "ack" "grep")
 
    ;; Format specification for setting the frame title.
    ;; %a - the `abbreviated-file-name', or `buffer-name'
@@ -471,6 +476,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    'before-save-hook
    'delete-trailing-whitespace)
 
+  (setq treesit-language-source-alist
+        '((tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+          (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")))
   )
 
 (defun dotspacemacs/user-load ()
@@ -502,8 +510,8 @@ before packages are loaded."
   (add-hook 'rjsx-mode 'yas-minor-mode)
   (setq prettier-js-args '(
                            "--single-quote"
-                           "--trailing-comma" "es5"
-                           "--no-semi"
+                           ;; "--trailing-comma" "es5"
+                           ;; "--no-semi"
                            "--write"
                            ))
 
@@ -512,7 +520,7 @@ before packages are loaded."
                  .
                  '(
                    "--single-quote"
-                   "--no-semi"
+                   ;; "--no-semi"
                    "--write"
                    )
                  ))
@@ -708,10 +716,11 @@ before packages are loaded."
     "Copy the path to the current file, including line numbers if
 they are in visual mode."
     (interactive)
-    (let* ((directory-abbrev-alist '(("/Users/juan" . "~")
+    (let* ((directory-abbrev-alist '(("/Users/juan.caicedo" . "~")
                                      ("~/code/td/circleci/" . "")
                                      ("~/code/td/" . "")
                                      ("~/code/personal/" . "")
+                                     ("~/code/vanna/vanna-connect/" . "")
                                      ))
            (file-name (abbreviate-file-name buffer-file-name)))
       (if (use-region-p)
@@ -726,6 +735,7 @@ they are in visual mode."
                               end-line)))
         (kill-new file-name)
         (evil-exit-visual-state 't))))
+  (spacemacs/set-leader-keys "fY" 'copy-file-name-with-lines)
   (spacemacs/set-leader-keys "fY" 'copy-file-name-with-lines)
 
   ;; Dvorak window movement
@@ -747,6 +757,7 @@ they are in visual mode."
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "l" 'insert-ticket-header)
   (spacemacs/set-leader-keys-for-major-mode 'typescript-mode "l" 'insert-console-log)
   (spacemacs/set-leader-keys-for-major-mode 'typescript-tsx-mode "l" 'insert-console-log)
+  (spacemacs/set-leader-keys-for-major-mode 'tsx-ts-mode "l" 'insert-console-log)
   (spacemacs/set-leader-keys-for-major-mode 'elixir-mode "l" 'insert-log-elixir)
   (spacemacs/set-leader-keys-for-major-mode 'python-mode "l" 'insert-log-python)
 
@@ -798,29 +809,29 @@ they are in visual mode."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (vimrc-mode helm-gtags ggtags dactyl-mode counsel-gtags evil-nerd-commenter yapfify yaml-mode ws-butler winum which-key wgrep web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tide typescript-mode tagedit spaceline powerline smex smeargle slim-mode slack emojify circe oauth2 websocket scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rjsx-mode reveal-in-osx-finder restart-emacs rbenv rake rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode prettier-js popwin pip-requirements phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox ox-gfm osx-trash osx-dictionary orgit org-projectile org-category-capture org-present org-pomodoro org-plus-contrib org-mime org-download org-bullets open-junk-file nginx-mode neotree mwim move-text mmm-mode minitest markdown-toc markdown-mode magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode skewer-mode simple-httpd live-py-mode linum-relative link-hint less-css-mode launchctl js2-refactor js2-mode js-doc ivy-hydra insert-shebang indent-guide ibuffer-projectile hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore request helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haml-mode graphql-mode google-translate golden-ratio gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht gh-md fuzzy flyspell-correct-ivy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck-elm flycheck flx-ido flx fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit magit git-commit ghub let-alist with-editor evil-lispy lispy zoutline evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu anzu evil goto-chg undo-tree emoji-cheat-sheet-plus emmet-mode elm-mode elisp-slime-nav dumb-jump drupal-mode php-mode dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat diminish diff-hl cython-mode csv-mode counsel-projectile projectile counsel swiper ivy company-web web-completion-data company-tern dash-functional tern company-statistics company-shell company-flow company-emoji company-anaconda company command-log-mode column-enforce-mode coffee-mode clojure-snippets clj-refactor hydra inflections edn multiple-cursors paredit peg clean-aindent-mode cider-eval-sexp-fu eval-sexp-fu highlight cider seq spinner queue pkg-info clojure-mode epl chruby bundler inf-ruby bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-dictionary auto-compile packed anaconda-mode pythonic f dash s alert log4e gntp aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-ispell auto-complete popup monokai-theme)))
- '(safe-local-variable-values
-   (quote
-    ((prettier-js-args "--no-semi" "--trailing-comma" "es5" "--print-width" "120" "--write")
-     (prettier-js-args "--no-semi" "--trailing-comma" "es5" "--single-quote" "--write")
-     (prettier-js-args "--no-semi" "--trailing-comma" "es5" "--single-quote" "--print-width" "120" "--write")
-     (prettier-js-args "--single-quote" "--no-semi" "--write")
-     (prettier-js-args quote
-                       ("--single-quote" "--no-semi" "--write"))))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((((class color) (min-colors 257)) (:foreground "#F8F8F2" :background "#272822")) (((class color) (min-colors 89)) (:foreground "#F5F5F5" :background "#1B1E1C")))))
-)
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(package-selected-packages
+     (quote
+      (vimrc-mode helm-gtags ggtags dactyl-mode counsel-gtags evil-nerd-commenter yapfify yaml-mode ws-butler winum which-key wgrep web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tide typescript-mode tagedit spaceline powerline smex smeargle slim-mode slack emojify circe oauth2 websocket scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rjsx-mode reveal-in-osx-finder restart-emacs rbenv rake rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode prettier-js popwin pip-requirements phpunit phpcbf php-extras php-auto-yasnippets persp-mode pcre2el pbcopy paradox ox-gfm osx-trash osx-dictionary orgit org-projectile org-category-capture org-present org-pomodoro org-plus-contrib org-mime org-download org-bullets open-junk-file nginx-mode neotree mwim move-text mmm-mode minitest markdown-toc markdown-mode magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode skewer-mode simple-httpd live-py-mode linum-relative link-hint less-css-mode launchctl js2-refactor js2-mode js-doc ivy-hydra insert-shebang indent-guide ibuffer-projectile hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore request helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haml-mode graphql-mode google-translate golden-ratio gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht gh-md fuzzy flyspell-correct-ivy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck-elm flycheck flx-ido flx fish-mode fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit magit git-commit ghub let-alist with-editor evil-lispy lispy zoutline evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu anzu evil goto-chg undo-tree emoji-cheat-sheet-plus emmet-mode elm-mode elisp-slime-nav dumb-jump drupal-mode php-mode dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat diminish diff-hl cython-mode csv-mode counsel-projectile projectile counsel swiper ivy company-web web-completion-data company-tern dash-functional tern company-statistics company-shell company-flow company-emoji company-anaconda company command-log-mode column-enforce-mode coffee-mode clojure-snippets clj-refactor hydra inflections edn multiple-cursors paredit peg clean-aindent-mode cider-eval-sexp-fu eval-sexp-fu highlight cider seq spinner queue pkg-info clojure-mode epl chruby bundler inf-ruby bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-dictionary auto-compile packed anaconda-mode pythonic f dash s alert log4e gntp aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-ispell auto-complete popup monokai-theme)))
+   '(safe-local-variable-values
+     (quote
+      ((prettier-js-args "--no-semi" "--trailing-comma" "es5" "--print-width" "120" "--write")
+       (prettier-js-args "--no-semi" "--trailing-comma" "es5" "--single-quote" "--write")
+       (prettier-js-args "--no-semi" "--trailing-comma" "es5" "--single-quote" "--print-width" "120" "--write")
+       (prettier-js-args "--single-quote" "--no-semi" "--write")
+       (prettier-js-args quote
+                         ("--single-quote" "--no-semi" "--write"))))))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(default ((((class color) (min-colors 257)) (:foreground "#F8F8F2" :background "#272822")) (((class color) (min-colors 89)) (:foreground "#F5F5F5" :background "#1B1E1C")))))
+  )
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
