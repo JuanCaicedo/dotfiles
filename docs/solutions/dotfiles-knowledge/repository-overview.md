@@ -23,7 +23,7 @@ Personal macOS development environment managed by Juan Caicedo.
 | Keyboard | Karabiner-Elements | `karabiner.json` | 155 |
 | Touch Bar/Trackpad | BetterTouchTool | `Laptop.bttpreset`, `.btt_autoload_preset.json` | - |
 | Launcher | Alfred | `Alfred.alfredpreferences/` | 82 files |
-| AI Tools | Claude Code | `.claude/settings.local.json` | - |
+| AI Tools | Claude Code | `.claude/settings.json`, `.claude/global-settings.local.json`, `.claude/CLAUDE.md` | - |
 
 ## Shell Configuration (.zshrc)
 
@@ -112,6 +112,27 @@ Based on [gpakosz/.tmux](https://github.com/gpakosz/.tmux).
 - History: 5000 lines
 - Theme: dark gray (#080808) with light gray text
 
+### Claude Code + tmux Integration
+
+Window names in the status bar show Claude's state via prefix characters:
+
+| Prefix | Meaning |
+|--------|---------|
+| `~` | Claude is processing |
+| `*` | Claude finished |
+| `#` | Claude is asking a question or waiting for permission |
+
+Prefix clears when you switch to the window or exit Claude. See `docs/plans/2026-02-03-feat-claude-tmux-status-integration-plan.md` for details.
+
+## Claude Code Configuration
+
+Global configs are tracked in `.claude/` and symlinked to `~/.claude/`:
+
+- **`settings.json`** — hooks (tmux status prefixes, notification sounds), enabled plugins (Linear, Figma, typescript-lsp), marketplace config
+- **`global-settings.local.json`** — global permissions (symlinked as `~/.claude/settings.local.json`)
+- **`CLAUDE.md`** — global Claude instructions (symlinked as `~/.claude/CLAUDE.md`)
+- **`settings.local.json`** — project-local permissions for this dotfiles repo (not symlinked)
+
 ## Repository History
 
 ### Timeline
@@ -123,7 +144,7 @@ Based on [gpakosz/.tmux](https://github.com/gpakosz/.tmux).
 | Sep-Oct 2018 | Only period using PRs; added Karabiner + BTT |
 | Jan-Feb 2019 | Periodic bulk syncs |
 | Aug 2020 | Major expansion: Hyper, tmux, gitconfig, zsh-theme, BTT preset |
-| Feb 2026 | Large sync after 5.5-year gap; added Alfred; Caps Lock changes |
+| Feb 2026 | Large sync after 5.5-year gap; added Alfred; Caps Lock changes; Claude Code + tmux integration |
 
 ### Patterns
 
@@ -131,9 +152,10 @@ Based on [gpakosz/.tmux](https://github.com/gpakosz/.tmux).
 - Commit style evolved from granular ("add graphql mode") to bulk ("sync files")
 - Credentials were accidentally committed to `.gitconfig` once and immediately removed
 - PRs were tried briefly (3 PRs in Oct 2018) then abandoned
-- The `sync-dotfiles` branch has 3 commits not yet merged to master
+- Default branch renamed from `master` to `main` in Feb 2026
+- `sync-dotfiles` was merged via PR #4
 
 ### Branches
 
-- **master**: Main branch, last commit Aug 2020
-- **sync-dotfiles**: Current work, 3 commits ahead of master
+- **main**: Default branch (renamed from `master`)
+- **claude**: Claude Code integration work

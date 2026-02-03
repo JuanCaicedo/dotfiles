@@ -28,6 +28,7 @@ These tools must be installed before the dotfiles are useful:
 | Google Cloud SDK | GCP tools | [cloud.google.com/sdk](https://cloud.google.com/sdk) |
 | Bun | JS package manager | [bun.sh](https://bun.sh) |
 | iTerm2 | Terminal (shell integration) | [iterm2.com](https://iterm2.com) |
+| Claude Code | AI coding assistant | [claude.com/claude-code](https://claude.com/claude-code) |
 
 ## Symlink Strategy
 
@@ -49,6 +50,17 @@ Karabiner expects its config at `~/.config/karabiner/karabiner.json`.
 
 The zsh theme goes in `~/.oh-my-zsh/custom/themes/juan.zsh-theme`.
 
+Claude Code global configs:
+
+```
+~/.claude/settings.json       -> dotfiles/.claude/settings.json
+~/.claude/settings.local.json -> dotfiles/.claude/global-settings.local.json
+~/.claude/CLAUDE.md           -> dotfiles/.claude/CLAUDE.md
+```
+
+Note: `global-settings.local.json` is named differently in the repo to avoid
+conflicting with the project-level `settings.local.json`.
+
 ## Known Issues
 
 1. **No install script** - Everything is manual symlinks. Consider adding a
@@ -64,6 +76,6 @@ The zsh theme goes in `~/.oh-my-zsh/custom/themes/juan.zsh-theme`.
    (`.tmuxconf` -> `.tmux.conf.local` -> `.tmux.conf`). The correct files
    are `.tmux.conf` (main) and `.tmux.conf.local` (overrides).
 
-5. **`sync-dotfiles` branch not merged** - 3 commits on `sync-dotfiles` are
-   not yet merged to `master`. This includes Alfred preferences, Caps Lock
-   changes, and a major sync of 6 config files.
+5. **Global gitignore blocks `.claude/` and `docs/`** - The repo has a
+   `.gitignore` with negation rules (`!.claude/`, `!docs/`) to override
+   the global gitignore. Without this, git won't track those directories.
