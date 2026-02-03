@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(vercel dns --help:*)",
+      "Bash(vercel dns ls:*)"
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "extraKnownMarketplaces": {
+    "local-dev": {
+      "source": {
+        "source": "file",
+        "path": "/Users/juan.caicedo/code/personal/compound-engineering-plugin"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true,
+    "linear@claude-plugins-official": true,
+    "figma@claude-plugins-official": true
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Glass.aiff"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Funk.aiff"
+          }
+        ]
+      }
+    ]
+  }
+}
