@@ -24,6 +24,17 @@
         ]
       }
     ],
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux rename-window -t \"$TMUX_PANE\" \"~$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_name}' | sed 's/^[~*#]//')\""
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "matcher": "",
@@ -84,6 +95,10 @@
       {
         "matcher": "",
         "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Funk.aiff"
+          },
           {
             "type": "command",
             "command": "[ -n \"$TMUX_PANE\" ] && tmux rename-window -t \"$TMUX_PANE\" \"#$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_name}' | sed 's/^[~*#]//')\""
