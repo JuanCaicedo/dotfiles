@@ -42,10 +42,10 @@ Use Claude Code hooks to prefix the tmux window name with a status character, an
 **The tmux clear hook:**
 
 ```tmux
-set-hook -g window-focus-in 'run-shell -b "name=$(tmux display-message -p \x27#{window_name}\x27); case \"$name\" in [~*#]*) tmux rename-window \"${name#[~*#]}\"; tmux set-option -w automatic-rename on ;; esac"'
+set-hook -g window-focus-in 'run-shell -b "name=$(tmux display-message -p \x27#{window_name}\x27); case \"$name\" in [~*#]*) tmux rename-window \"${name#[~*#]}\" ;; esac"'
 ```
 
-Re-enables `automatic-rename` after clearing so the window name goes back to tracking the running program.
+Strips the prefix only — does NOT re-enable `automatic-rename` (see issue #6 below).
 
 ## Issues Encountered and Solutions
 
@@ -91,6 +91,14 @@ Re-enables `automatic-rename` after clearing so the window name goes back to tra
 
 **Fix:** Add a `PreToolUse` hook that sets `~`. When Claude resumes processing, it calls a tool, which triggers the prefix change.
 
+### 6. Window name resets to `zsh` after exiting Claude
+
+**Problem:** After exiting Claude, the window name changed to `zsh` instead of keeping the custom name that was set before Claude started.
+
+**Root cause:** The `SessionEnd` hook and `window-focus-in` hook both re-enabled `automatic-rename` after stripping the prefix. Once `automatic-rename` is on, tmux immediately renames the window to the currently running program (`zsh`), discarding any custom name.
+
+**Fix:** Remove `tmux set-option -w automatic-rename on` from both the `SessionEnd` hook and the tmux `window-focus-in` hook. Just strip the prefix and leave the name as-is. The tradeoff is that windows where Claude has run will keep `automatic-rename` off, but this preserves custom window names.
+
 ## Prevention
 
 When working with Claude Code hooks:
@@ -100,6 +108,7 @@ When working with Claude Code hooks:
 - Use `$TMUX_PANE` with `-t` flag for all tmux commands in hooks to target the correct window
 - Use `PreToolUse` as a proxy for "Claude is working" since there's no explicit "resume" hook
 - Test each hook event independently — what fires for a permission prompt may differ from what fires for AskUserQuestion
+- Don't re-enable `automatic-rename` after stripping prefixes — it will clobber custom window names to `zsh`
 
 ## Files
 
