@@ -99,7 +99,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -n \"$TMUX_PANE\" ] && name=$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_name}'); case \"$name\" in [~*#]*) tmux rename-window -t \"$TMUX_PANE\" \"${name#[~*#]}\"; tmux set-option -w -t \"$TMUX_PANE\" automatic-rename on ;; esac"
+            "command": "[ -n \"$TMUX_PANE\" ] && name=$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_name}'); case \"$name\" in [~*#]*) tmux rename-window -t \"$TMUX_PANE\" \"${name#[~*#]}\" ;; esac"
           }
         ]
       }
