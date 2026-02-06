@@ -1,19 +1,17 @@
 {
-  "extraKnownMarketplaces": {
-    "local-dev": {
-      "source": {
-        "source": "file",
-        "path": "/Users/juan.caicedo/code/personal/compound-engineering-plugin"
-      }
-    }
-  },
-  "enabledPlugins": {
-    "typescript-lsp@claude-plugins-official": true,
-    "linear@claude-plugins-official": true,
-    "figma@claude-plugins-official": true
-  },
   "hooks": {
     "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux rename-window -t \"$TMUX_PANE\" \"~$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_name}' | sed 's/^[~*#]//')\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
       {
         "matcher": "",
         "hooks": [
@@ -86,6 +84,10 @@
         "hooks": [
           {
             "type": "command",
+            "command": "afplay /System/Library/Sounds/Funk.aiff"
+          },
+          {
+            "type": "command",
             "command": "[ -n \"$TMUX_PANE\" ] && tmux rename-window -t \"$TMUX_PANE\" \"#$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_name}' | sed 's/^[~*#]//')\""
           }
         ]
@@ -97,10 +99,24 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -n \"$TMUX_PANE\" ] && name=$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_name}'); case \"$name\" in [~*#]*) tmux rename-window -t \"$TMUX_PANE\" \"${name#[~*#]}\"; tmux set-option -w -t \"$TMUX_PANE\" automatic-rename on ;; esac"
+            "command": "[ -n \"$TMUX_PANE\" ] && name=$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_name}'); case \"$name\" in [~*#]*) tmux rename-window -t \"$TMUX_PANE\" \"${name#[~*#]}\" ;; esac"
           }
         ]
       }
     ]
-  }
+  },
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true,
+    "linear@claude-plugins-official": true,
+    "figma@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "local-dev": {
+      "source": {
+        "source": "file",
+        "path": "/Users/juan.caicedo/code/personal/compound-engineering-plugin"
+      }
+    }
+  },
+  "model": "sonnet"
 }
