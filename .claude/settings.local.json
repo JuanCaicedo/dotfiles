@@ -46,7 +46,9 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(gh pr create:*)",
-      "Bash(gh pr merge:*)"
+      "Bash(gh pr merge:*)",
+      "Bash(chmod:*)",
+      "Bash(./install.sh:*)"
     ]
   }
 }
