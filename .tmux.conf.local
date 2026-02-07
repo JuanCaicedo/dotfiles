@@ -276,5 +276,9 @@ bind-key s command-prompt -p "send pane to:"  "join-pane -t '%%'"
 # Override new window binding to start in ~/code/
 bind c new-window -c "$HOME/code" \; send-keys "cd $HOME/code" C-m \; send-keys "clear" C-m
 
+# Save/restore named layouts with tmux-resurrect
+bind S command-prompt -p "Save layout as:" "run-shell '~/.tmux/scripts/save-layout.sh \"%%\"'"
+bind R command-prompt -p "Restore layout:" "run-shell '~/.tmux/scripts/restore-layout.sh \"%%\"'"
+
 # Clear Claude status prefix when switching to a window
-set-hook -g window-focus-in 'run-shell -b "name=$(tmux display-message -p \x27#{window_name}\x27); case \"$name\" in [~*#]*) tmux rename-window \"${name#[~*#]}\" ;; esac"'
+set-hook -g after-select-window 'run-shell -b "name=$(tmux display-message -p \x27#{window_name}\x27); case \"$name\" in [~*#]*) tmux rename-window \"${name#[~*#]}\" ;; esac"'
