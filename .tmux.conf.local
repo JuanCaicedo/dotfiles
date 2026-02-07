@@ -273,5 +273,8 @@ setw -g status-position top
 bind-key j command-prompt -p "join pane from:"  "join-pane -s '%%'"
 bind-key s command-prompt -p "send pane to:"  "join-pane -t '%%'"
 
+# Override new window binding to start in ~/code/
+bind c new-window -c "$HOME/code" \; send-keys "cd $HOME/code" C-m \; send-keys "clear" C-m
+
 # Clear Claude status prefix when switching to a window
 set-hook -g window-focus-in 'run-shell -b "name=$(tmux display-message -p \x27#{window_name}\x27); case \"$name\" in [~*#]*) tmux rename-window \"${name#[~*#]}\" ;; esac"'
