@@ -253,34 +253,28 @@ alias claudep='claude --plugin-dir /Users/juan.caicedo/code/personal/compound-en
 # To enable: run `claude-highlight-on`
 # To disable: run `claude-highlight-off` or export CLAUDE_NO_HIGHLIGHT=1
 
-# Wrapper function that properly handles arguments
-function _claude_with_highlight() {
-  command claude "$@" | $HOME/code/personal/dotfiles/.claude/markdown-highlighter.sh
+# Main wrapper function - always defined, handles arguments properly
+function claude() {
+  if [[ "${CLAUDE_HIGHLIGHT_ENABLED:-1}" == "1" ]]; then
+    command claude "$@" | $HOME/code/personal/dotfiles/.claude/markdown-highlighter.sh
+  else
+    command claude "$@"
+  fi
 }
 
 function claude-highlight-on() {
-  # Check if already enabled
-  if declare -f claude > /dev/null 2>&1; then
-    echo "✓ Claude markdown highlighting already enabled"
-    return
-  fi
-
-  # Create function wrapper (not alias) to handle arguments properly
-  function claude() {
-    _claude_with_highlight "$@"
-  }
-
+  export CLAUDE_HIGHLIGHT_ENABLED=1
   echo "✓ Claude markdown highlighting enabled"
   echo "  To disable: run 'claude-highlight-off'"
 }
 
 function claude-highlight-off() {
-  unset -f claude 2>/dev/null
+  export CLAUDE_HIGHLIGHT_ENABLED=0
   echo "✓ Claude markdown highlighting disabled"
   echo "  To enable: run 'claude-highlight-on'"
 }
 
-# Auto-enable highlighting by default (comment out if you prefer opt-in)
-claude-highlight-on
+# Auto-enable highlighting by default (comment out to disable)
+export CLAUDE_HIGHLIGHT_ENABLED=1
 
 export VISUAL="emacsclient -t".
