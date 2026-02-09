@@ -252,22 +252,30 @@ alias claudep='claude --plugin-dir /Users/juan.caicedo/code/personal/compound-en
 # Claude markdown highlighting
 # To enable: run `claude-highlight-on`
 # To disable: run `claude-highlight-off` or export CLAUDE_NO_HIGHLIGHT=1
+
+# Wrapper function that properly handles arguments
+function _claude_with_highlight() {
+  command claude "$@" | $HOME/code/personal/dotfiles/.claude/markdown-highlighter.sh
+}
+
 function claude-highlight-on() {
-  if ! alias claude > /dev/null 2>&1 || [[ "$(alias claude)" != *"markdown-highlighter"* ]]; then
-    # Save original claude command if it exists
-    if command -v claude > /dev/null 2>&1; then
-      alias claude-plain='command claude'
-    fi
-    alias claude='command claude | $HOME/code/personal/dotfiles/.claude/markdown-highlighter.sh'
-    echo "✓ Claude markdown highlighting enabled"
-    echo "  To disable: run 'claude-highlight-off'"
-  else
+  # Check if already enabled
+  if declare -f claude > /dev/null 2>&1; then
     echo "✓ Claude markdown highlighting already enabled"
+    return
   fi
+
+  # Create function wrapper (not alias) to handle arguments properly
+  function claude() {
+    _claude_with_highlight "$@"
+  }
+
+  echo "✓ Claude markdown highlighting enabled"
+  echo "  To disable: run 'claude-highlight-off'"
 }
 
 function claude-highlight-off() {
-  unalias claude 2>/dev/null
+  unset -f claude 2>/dev/null
   echo "✓ Claude markdown highlighting disabled"
   echo "  To enable: run 'claude-highlight-on'"
 }
