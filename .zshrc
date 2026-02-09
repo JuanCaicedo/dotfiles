@@ -249,4 +249,30 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 alias claudep='claude --plugin-dir /Users/juan.caicedo/code/personal/compound-engineering-plugin/plugins/compound-engineering'
 
+# Claude markdown highlighting
+# To enable: run `claude-highlight-on`
+# To disable: run `claude-highlight-off` or export CLAUDE_NO_HIGHLIGHT=1
+function claude-highlight-on() {
+  if ! alias claude > /dev/null 2>&1 || [[ "$(alias claude)" != *"markdown-highlighter"* ]]; then
+    # Save original claude command if it exists
+    if command -v claude > /dev/null 2>&1; then
+      alias claude-plain='command claude'
+    fi
+    alias claude='command claude | $HOME/code/personal/dotfiles/.claude/markdown-highlighter.sh'
+    echo "✓ Claude markdown highlighting enabled"
+    echo "  To disable: run 'claude-highlight-off'"
+  else
+    echo "✓ Claude markdown highlighting already enabled"
+  fi
+}
+
+function claude-highlight-off() {
+  unalias claude 2>/dev/null
+  echo "✓ Claude markdown highlighting disabled"
+  echo "  To enable: run 'claude-highlight-on'"
+}
+
+# Auto-enable highlighting by default (comment out if you prefer opt-in)
+claude-highlight-on
+
 export VISUAL="emacsclient -t".
