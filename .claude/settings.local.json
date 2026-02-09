@@ -48,7 +48,23 @@
       "Bash(gh pr create:*)",
       "Bash(gh pr merge:*)",
       "Bash(chmod:*)",
-      "Bash(./install.sh:*)"
+      "Bash(./install.sh:*)",
+      "Bash(tmux source:*)",
+      "Bash(tmux:*)",
+      "Bash(git stash:*)",
+      "Bash(git pull:*)",
+      "Bash(git reset:*)",
+      "Bash(git s:*)",
+      "Bash('/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_cli' --list-devices)",
+      "Bash(killall:*)",
+      "Bash(ioreg:*)",
+      "Bash(system_profiler:*)",
+      "Bash(launchctl:*)",
+      "Bash(pkill:*)",
+      "Bash(defaults delete:*)",
+      "WebFetch(domain:manuals.plus)",
+      "Skill(compound-docs)",
+      "Bash(unzip:*)"
     ]
   }
 }
