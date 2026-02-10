@@ -255,12 +255,14 @@ alias claudep='claude --plugin-dir /Users/juan.caicedo/code/personal/compound-en
 
 # Main wrapper function - always defined, handles arguments properly
 function claude() {
-  if [[ "${CLAUDE_HIGHLIGHT_ENABLED:-1}" == "1" ]]; then
-    # Use script to preserve TTY behavior even when piping
-    # -q: quiet mode (no typescript messages)
-    # /dev/null: don't save output to a file
-    script -q /dev/null command claude "$@" | $HOME/code/personal/dotfiles/.claude/markdown-highlighter.sh
+  # Only apply highlighting if:
+  # 1. Highlighting is enabled
+  # 2. Arguments are provided (non-interactive mode)
+  if [[ "${CLAUDE_HIGHLIGHT_ENABLED:-1}" == "1" ]] && [[ $# -gt 0 ]]; then
+    # Non-interactive: safe to pipe
+    command claude "$@" | $HOME/code/personal/dotfiles/.claude/markdown-highlighter.sh
   else
+    # Interactive or highlighting disabled: run directly
     command claude "$@"
   fi
 }
