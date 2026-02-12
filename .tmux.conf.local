@@ -282,3 +282,7 @@ bind R command-prompt -p "Restore layout:" "run-shell '~/.tmux/scripts/restore-l
 
 # Clear Claude status prefix when switching to a window
 set-hook -g after-select-window 'run-shell -b "name=$(tmux display-message -p \x27#{window_name}\x27); case \"$name\" in [~*#]*) tmux rename-window \"${name#[~*#]}\" ;; esac"'
+
+# Ensure both split bindings maintain current directory
+bind % split-window -h -c "#{pane_current_path}"
+bind '"' split-window -v -c "#{pane_current_path}"
