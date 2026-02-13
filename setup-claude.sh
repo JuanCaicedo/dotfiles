@@ -55,4 +55,52 @@ for file in "${FILES[@]}"; do
 done
 
 echo ""
+
+# Symlink individual skills from dotfiles
+echo "Setting up skills..."
+SKILLS_SOURCE="$SOURCE_DIR/skills"
+SKILLS_TARGET="$CLAUDE_DIR/skills"
+
+# Ensure target skills directory exists
+mkdir -p "$SKILLS_TARGET"
+
+# Check if skills directory exists in dotfiles
+if [ -d "$SKILLS_SOURCE" ]; then
+  # Loop through each skill in dotfiles
+  for skill_dir in "$SKILLS_SOURCE"/*; do
+    if [ -d "$skill_dir" ]; then
+      skill_name=$(basename "$skill_dir")
+
+      # Skip .gitkeep or hidden files
+      if [[ "$skill_name" == "."* ]]; then
+        continue
+      fi
+
+      source="$SKILLS_SOURCE/$skill_name"
+      target="$SKILLS_TARGET/$skill_name"
+
+      # Check if already correctly symlinked
+      if [ -L "$target" ] && [ "$(readlink "$target")" = "$source" ]; then
+        echo "✓ $skill_name (already linked)"
+        continue
+      fi
+
+      # If target exists and is not our symlink
+      if [ -e "$target" ] || [ -L "$target" ]; then
+        # Backup existing skill
+        backup="$target.backup.$(date +%Y%m%d-%H%M%S)"
+        echo "⚠ Backing up existing skill: $skill_name → $backup"
+        mv "$target" "$backup"
+      fi
+
+      # Create symlink
+      ln -s "$source" "$target"
+      echo "✓ Linked skill: $skill_name"
+    fi
+  done
+else
+  echo "⊘ No skills directory in dotfiles (skipping)"
+fi
+
+echo ""
 echo "✅ Claude Code setup complete!"
