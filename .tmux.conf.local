@@ -286,9 +286,3 @@ set-hook -g after-select-window 'run-shell -b "name=$(tmux display-message -p \x
 # Ensure both split bindings maintain current directory
 bind % split-window -h -c "#{pane_current_path}"
 bind '"' split-window -v -c "#{pane_current_path}"
-
-# Dvorak pane switcher - <prefix> + w + w
-# Uses key table to preserve both pane switcher and tree view
-bind w switch-client -T window-menu
-bind -T window-menu w run-shell '~/.tmux/scripts/pane-switcher.sh'
-bind -T window-menu t choose-tree -Zw  # Tree view moved to w+t
