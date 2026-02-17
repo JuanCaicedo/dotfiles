@@ -281,7 +281,10 @@ bind S command-prompt -p "Save layout as:" "run-shell '~/.tmux/scripts/save-layo
 bind R command-prompt -p "Restore layout:" "run-shell '~/.tmux/scripts/restore-layout.sh \"%%\"'"
 
 # Clear Claude status prefix when switching to a window
-set-hook -g after-select-window 'run-shell -b "name=$(tmux display-message -p \x27#{window_name}\x27); case \"$name\" in [~*#]*) tmux rename-window \"${name#[~*#]}\" ;; esac"'
+set-hook -g after-select-window 'run-shell -b "~/.tmux/scripts/clear-status-prefix.sh"'
+
+# Pane switcher - show number overlays on all panes in current window
+bind w display-panes -d 0
 
 # Ensure both split bindings maintain current directory
 bind % split-window -h -c "#{pane_current_path}"
