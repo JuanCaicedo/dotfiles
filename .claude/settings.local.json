@@ -64,7 +64,8 @@
       "Bash(defaults delete:*)",
       "WebFetch(domain:manuals.plus)",
       "Skill(compound-docs)",
-      "Bash(unzip:*)"
+      "Bash(unzip:*)",
+      "Bash(git revert:*)"
     ]
   }
 }
