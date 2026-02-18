@@ -169,7 +169,7 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 # rbenv
 #eval "$(rbenv init -)"
-# export EDITOR="emacsclient -t"
+export EDITOR="emacsclient -c"
 export VISUAL="emacsclient -t"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
