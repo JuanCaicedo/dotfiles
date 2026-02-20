@@ -1,0 +1,5 @@
+# Add skill directory names here if they contain sensitive data
+# Example:
+# production-deploy/
+# aws-credentials/
+# api-keys-helper/

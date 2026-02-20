@@ -1,0 +1,137 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux rename-window -t \"$TMUX_PANE\" \"~$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_name}' | sed 's/^[~*#]//')\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux rename-window -t \"$TMUX_PANE\" \"~$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_name}' | sed 's/^[~*#]//')\""
+          }
+        ]
+      },
+      {
+        "matcher": "Bash.*git commit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if git rev-parse --git-dir > /dev/null 2>&1; then emacsclient -e '(progn (magit-diff-staged) (select-frame-set-input-focus (selected-frame)))' && read -p 'Review diff in magit. Press enter to proceed with commit or Ctrl+C to cancel: '; fi"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Glass.aiff"
+          },
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux rename-window -t \"$TMUX_PANE\" \"*$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_name}' | sed 's/^[~*#]//')\""
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Funk.aiff"
+          },
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux rename-window -t \"$TMUX_PANE\" \"#$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_name}' | sed 's/^[~*#]//')\""
+          }
+        ]
+      },
+      {
+        "matcher": "idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Funk.aiff"
+          },
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux rename-window -t \"$TMUX_PANE\" \"#$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_name}' | sed 's/^[~*#]//')\""
+          }
+        ]
+      },
+      {
+        "matcher": "elicitation_dialog",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Funk.aiff"
+          },
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux rename-window -t \"$TMUX_PANE\" \"#$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_name}' | sed 's/^[~*#]//')\""
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Funk.aiff"
+          },
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux rename-window -t \"$TMUX_PANE\" \"#$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_name}' | sed 's/^[~*#]//')\""
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX_PANE\" ] && name=$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_name}'); case \"$name\" in [~*#]*) tmux rename-window -t \"$TMUX_PANE\" \"${name#[~*#]}\" ;; esac"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "SCRIPT=\"$HOME/.claude/statusline.sh\"; if [ ! -f \"$SCRIPT\" ]; then cat > \"$SCRIPT\" << 'STATUSLINE_EOF'\n#!/bin/bash\n# Optimized status line script for Claude Code\n# Shows: current directory | git branch (if in a git repo)\n\n# Read JSON input from stdin\ninput=$(cat)\n\n# Extract current directory from JSON (fast, no filesystem access)\ncwd=$(echo \"$input\" | jq -r '.workspace.current_dir')\n\n# OPTIMIZATION 1: Fast git branch detection with timeout\n# Use 'timeout' command to prevent hanging on slow git operations\n# Fallback to plain git if timeout command is not available\nif command -v timeout >/dev/null 2>&1; then\n  # With timeout: abort git command after 0.1 seconds\n  branch=$(cd \"$cwd\" 2>/dev/null && timeout 0.1 git -c core.fileMode=false -c gc.auto=0 rev-parse --abbrev-ref HEAD 2>/dev/null)\nelse\n  # Without timeout: use git with optimizations\n  branch=$(cd \"$cwd\" 2>/dev/null && git -c core.fileMode=false -c gc.auto=0 rev-parse --abbrev-ref HEAD 2>/dev/null)\nfi\n\n# OPTIMIZATION 2: Skip git check if .git directory doesn't exist\n# This avoids the git command entirely for non-git directories\nif [ ! -d \"$cwd/.git\" ]; then\n  branch=\"\"\nfi\n\n# Display the status line\n# Format: \"branch | directory\" or just \"directory\" if not in a git repo\nif [ -n \"$branch\" ]; then\n  # Using printf with ANSI dim colors for subtle display\n  printf \"\\033[2m%s | %s\\033[0m\\n\" \"$branch\" \"$cwd\"\nelse\n  printf \"\\033[2m%s\\033[0m\\n\" \"$cwd\"\nfi\nSTATUSLINE_EOF\nchmod +x \"$SCRIPT\"; fi; \"$SCRIPT\""
+  },
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true,
+    "linear@claude-plugins-official": true,
+    "figma@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "compound-engineering@juan-caicedo-marketplace": true
+  },
+  "extraKnownMarketplaces": {
+    "local-dev": {
+      "source": {
+        "source": "file",
+        "path": "/Users/juan.caicedo/code/personal/compound-engineering-plugin"
+      }
+    }
+  },
+  "effortLevel": "medium"
+}

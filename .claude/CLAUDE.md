@@ -1,5 +1,9 @@
 # Global Claude Code Guidelines
 
+## Git Commit Rules
+
+**Never commit automatically.** Only create git commits when the user explicitly asks (e.g., "commit this", "create a commit", "commit my changes"). Completing a task does not imply permission to commit.
+
 ## Project-Specific Documentation Rules
 
 ### Vanna Project

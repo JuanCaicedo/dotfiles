@@ -97,5 +97,10 @@ AGENTS.md
 .env-backup-2
 .tmp
 todos
+.todos
 docs
+typescript/docs
 screenshots
+
+
+.worktrees/
