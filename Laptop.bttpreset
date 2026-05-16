@@ -841,7 +841,7 @@
           "BTTPredefinedActionName" : "No Action",
           "BTTAutoAdaptActionToKeyboardLayout" : true,
           "BTTShortcutToSend" : "124",
-          "BTTAdditionalConfiguration" : "1048576",
+          "BTTAdditionalConfiguration" : "0",
           "BTTEnabled2" : 1,
           "BTTKeyboardShortcutKeyboardType" : 40,
           "BTTRepeatRate" : 0.058183595538139322,
