@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/juan.caicedo/.oh-my-zsh
+export ZSH="$HOME/.oh-my-zsh"
 
 #export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 #[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
@@ -57,7 +57,7 @@ plugins=(
   cp
   git
 #  golang
-  nvm
+#  nvm
 #  zsh-completions
 #  virtualenv
 #  virtualenvwrapper
@@ -66,7 +66,7 @@ plugins=(
 
 #source $ZSH/oh-my-zsh.sh
 
-source /Users/juan.caicedo/.oh-my-zsh/oh-my-zsh.sh
+source "$ZSH/oh-my-zsh.sh"
 
 nvm_use () {
   if [ -f .nvmrc ]; then
@@ -143,7 +143,7 @@ alias gbD='git b -D'
 alias spacemacs='emacs'
 alias nm="/usr/local/bin/notify-me"
 alias yarn="yarn --ignore-engines"
-alias git=hub
+# alias git=hub
 alias emacs-freeze="pkill -SIGUSR2 emacs"
 alias npmls="npm ls --depth=0"
 alias gits="git s"
@@ -155,7 +155,7 @@ alias pip="pip3"
 # Avoid node errors
 ulimit -n 10000
 
-nvm use default --silent
+# nvm use default --silent
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
@@ -193,60 +193,26 @@ if [ -f '/Users/juan/code/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users
 # asdf
 # . $(brew --prefix asdf)/asdf.sh
 
-. "$HOME/.local/bin/env"
-
-vannabk() {
-    set -euo pipefail
-
-    local REPO_ROOT="/Users/juan.caicedo/code/vanna"
-    local SRC_DIR="$REPO_ROOT/vanna-connect"
-    local BK_ROOT="$REPO_ROOT/vanna-connect-bk"
-    local DATE_DIR base n dst
-
-    DATE_DIR="$(date +%m-%d-%Y)"
-    base="${BK_ROOT}/${DATE_DIR}"
-
-    # Safety check
-    if [[ ! -d "$SRC_DIR" ]]; then
-        echo "Error: $SRC_DIR does not exist" >&2
-        return 1
-    fi
-
-    mkdir -p "$BK_ROOT"
-
-    # Pick the next available <date>_<n> directory
-    n=1
-    while [[ -e "${base}_${n}" ]]; do
-        ((n++))
-    done
-    dst="${base}_${n}"
-    mkdir -p "$dst"
-
-    # Always copy these directories
-    cp -a \
-       "$SRC_DIR/.specify" \
-       "$SRC_DIR/.cursor" \
-       "$SRC_DIR/.claude" \
-       "$SRC_DIR/specs" \
-       "$SRC_DIR/docs" \
-       "$dst/"
-
-    # Copy Claude.md only if it exists
-    if [[ -f "$SRC_DIR/Claude.md" ]]; then
-        cp -a "$SRC_DIR/Claude.md" "$dst/"
-    fi
-}
-
-##CODEX
-export CODEX_HOME=/Users/juan.caicedo/code/vanna/vanna-connect/.codex
+[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 
 # bun completions
-[ -s "/Users/juan.caicedo/.bun/_bun" ] && source "/Users/juan.caicedo/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-alias claudep='claude --plugin-dir /Users/juan.caicedo/code/personal/compound-engineering-plugin/plugins/compound-engineering'
+alias claudep='claude --plugin-dir $HOME/code/personal/compound-engineering-plugin/plugins/compound-engineering'
 
-export VISUAL="emacsclient -t".
+export PATH="$HOME/.local/bin:$PATH"
+
+# --- Diagnostic: log terminal/tmux state on shell startup to debug restarts ---
+if [ "$TERM_PROGRAM" = "Hyper" ]; then
+  _diag_log="$HOME/.hyper-tmux-diag.log"
+  _tmux_status=$(tmux ls 2>&1)
+  echo "$(date +'%Y-%m-%d %H:%M:%S') shell-opened | tmux-status: $_tmux_status" >> "$_diag_log"
+  unset _diag_log _tmux_status
+fi
+
+# fnm
+eval "$(fnm env --use-on-cd --shell zsh)"
