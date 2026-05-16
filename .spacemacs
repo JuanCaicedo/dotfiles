@@ -225,7 +225,7 @@ It should only modify the values of Spacemacs settings."
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '(
                                ;; "Inter"
-                               "Office Code Pro"
+                               "Source Code Pro"
                                ;; "Source Sans Pro"
                                ;; :size 12
                                :size 16
@@ -771,12 +771,12 @@ they are in visual mode."
   (evil-define-key 'normal treemacs-mode-map (kbd "n") 'evil-forward-char)
   (evil-define-key 'normal treemacs-mode-map (kbd "j") 'evil-forward-char)
 
-  ;; Load node path
-  (load-file "~/add-node-modules-path/add-node-modules-path.el")
-  (eval-after-load 'rjsx-mode
-    '(add-hook 'rjsx-mode-hook #'add-node-modules-path))
-  (eval-after-load 'typescript-mode
-    '(add-hook 'typescript-mode-hook #'add-node-modules-path))
+  ;; Load node path (disabled - add-node-modules-path not installed locally)
+  ;; (load-file "~/add-node-modules-path/add-node-modules-path.el")
+  ;; (eval-after-load 'rjsx-mode
+  ;;   '(add-hook 'rjsx-mode-hook #'add-node-modules-path))
+  ;; (eval-after-load 'typescript-mode
+  ;;   '(add-hook 'typescript-mode-hook #'add-node-modules-path))
 
   (setq magit-display-buffer-function
         (lambda (buffer)
