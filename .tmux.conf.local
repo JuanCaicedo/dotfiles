@@ -289,3 +289,7 @@ bind w display-panes -d 0
 # Ensure both split bindings maintain current directory
 bind % split-window -h -c "#{pane_current_path}"
 bind '"' split-window -v -c "#{pane_current_path}"
+
+# --- Diagnostic: log tmux server/session events to help debug restarts ---
+set-hook -g session-created 'run-shell -b "echo \"$(date +\"%Y-%m-%d %H:%M:%S\") session-created: #{session_name} (server pid: #{pid})\" >> ~/.tmux-events.log"'
+set-hook -g session-closed 'run-shell -b "echo \"$(date +\"%Y-%m-%d %H:%M:%S\") session-closed: #{session_name}\" >> ~/.tmux-events.log"'
