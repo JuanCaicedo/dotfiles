@@ -1,0 +1,13 @@
+{
+  "exclusionRules": [
+    {
+      "passKeys": "*",
+      "pattern": "https?://www.powerlanguage.co.uk/*"
+    }
+  ],
+  "grabBackFocus": true,
+  "keyMappings": "# Insert your preferred key mappings here.\nunmapAll\n\n# Basic movement\nmap d scrollLeft\nmap h scrollDown\nmap t scrollUp\nmap n scrollRight\nmap gg scrollToTop\nmap G scrollToBottom\n\n# Tabs\nmap H previousTab\nmap T nextTab\nmap q removeTab\nmap Q restoreTab\nmap p reload\nmap M createTab\nmap D goBack\nmap N goForward\nmap [[ goPrevious\nmap ]] goNext\nmap z moveTabToNewWindow\n\n# Links\nmap mm copyCurrentUrl\nmap r Vomnibar.activate\nmap R Vomnibar.activateNewTab\nmap b Vomnibar.activateBookmarks\nmap B Vomnibar.activateBookmarksInNewTab\nmap L openCopiedUrlInNewTab\n\n# Finding / Selection\nmap u LinkHints.activateMode\nmap U LinkHints.activateModeToOpenInNewForegroundTab\nmap x enterVisualMode\nmap X enterVisualLineMode\nmap c enterInsertMode\nmap / enterFindMode\nmap l performFind\nmap L performBackwardsFind\n\n# Other\nmap ic focusInput\nmap ? showHelp",
+  "linkHintCharacters": "oeuhtnsgcrl",
+  "newTabDestination": "browserNewTabPage",
+  "settingsVersion": "2.4.2"
+}
